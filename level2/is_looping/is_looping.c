@@ -17,18 +17,18 @@ struct s_node {
 
 int	is_looping(struct s_node *node)
 {
-	struct s_node *elem;
+	struct s_node *head;
 	struct s_node *current;
 
 	if (!node)
 		return (0);
-	elem = node;
+	head = node;
 	current = node;
-	while(elem && current)
+	while (head && current)
 	{
-		current = current->next;
-		elem = elem->next->next;
-		if (current == elem)
+		head = head->next;
+		current = current->next->next;
+		if (head == current)
 			return (1);
 	}
 	return (0);

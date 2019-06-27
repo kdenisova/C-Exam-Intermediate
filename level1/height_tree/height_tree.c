@@ -17,23 +17,20 @@ struct s_node {
 
 int height_tree(struct s_node *root)
 {
-	int i;
 	int h;
+	int i;
 	int temp;
 
-	i = 0;
 	h = 0;
+	i = 0;
 	if (!root)
 		return (-1);
-	if (root->nodes)
+	while (root->nodes[i])
 	{
-		while (root->nodes[i])
-		{
-			temp = 1 + height_tree(root->nodes[i]);
-			if (temp > h)
-				h = temp;
-			i++;
-		}
+		temp = 1 + height_tree(root->nodes[i]);
+		if (temp > h)
+			h = temp;
+		i++;
 	}
 	return (h);
 }

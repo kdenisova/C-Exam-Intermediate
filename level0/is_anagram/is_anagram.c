@@ -12,21 +12,22 @@
 
 int	is_anagram(char *a, char *b)
 {
-    int *temp[127];
+    int al[127];
     int i;
 
     i = 0;
-    while (i < 127)
-        temp[i++] = 0;
+    while (i++ < 127)
+        al[i] = 0;
     i = 0;
-    while (a[i])
-        temp[(unsigned)a[i++]]++;
+    while (a[i] && b[i])
+    {
+        al[(unsigned)a[i]]++;
+        al[(unsigned)b[i]]--;
+        i++;
+    }
     i = 0;
-    while (b[i])
-        temp[(unsigned)b[i++]]--;
-    i = 0;
-    while (i < 127)
-        if (temp[i++] != 0)
+    while (i++ < 127)
+        if(al[i] != 0)
             return (0);
     return (1);
 }

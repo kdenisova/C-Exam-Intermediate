@@ -24,16 +24,14 @@ struct s_node *create_node(int value)
 {
 	struct s_node *node;
 	int i;
-	int size;
 
 	i = 0;
-	size = 5;
-	node = malloc(sizeof(*node));
+	node = (struct s_node *)malloc(sizeof(struct s_node));
 	node->value = value;
-	node->nodes = malloc(sizeof(*node->nodes) * size);
-	while (i < size)
+	node->nodes = malloc(sizeof(node->nodes) * 3);
+	while (i < 3)
 	{
-		node->nodes[i] = 0;
+		node->nodes[i] = NULL;
 		i++;
 	}
 	return (node);
@@ -43,19 +41,15 @@ int main(void)
 {
 	struct s_node *root;
 	int i;
-	int size;
-	
+
 	i = 0;
-	size = 4;
+	//root = NULL;
 	root = create_node(1);
-	while (i < size)
-	{
-		root->nodes[i] = create_node(i + 1);
-		i++;
-	}
-	root->nodes[0]->nodes[0] = create_node(27);
-	root->nodes[0]->nodes[1] = create_node(30);
-	//root->nodes[0]->nodes[1]->nodes[0] = create_node(10);
-	printf("height = %d\n", height_tree(root));
+	root->nodes[0] = create_node(3);
+	root->nodes[1] = create_node(3);
+	root->nodes[0]->nodes[0] = create_node(3);
+	root->nodes[0]->nodes[0]->nodes[0] = create_node(54);
+	printf("%d\n", root->nodes[0]->nodes[0]->nodes[0]->value);
+	printf("%d\n", height_tree(root));
 	return (0);
 }
