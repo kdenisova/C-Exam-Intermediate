@@ -3,90 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   count_alpha.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: kdenisov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 10:46:08 by exam              #+#    #+#             */
-/*   Updated: 2019/04/02 11:13:34 by exam             ###   ########.fr       */
+/*   Created: 2019/07/01 10:56:29 by kdenisov          #+#    #+#             */
+/*   Updated: 2019/07/01 10:56:31 by kdenisov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-int	is_alpha(char c)
+char *to_low(char *str)
 {
-	if (c >= 'a' && c <= 'z')
-		return (1);
-	return (0);
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+            str[i] = str[i] + 32;
+        i++;
+    }
+    return (str);
 }
 
-char *ft_tolower(char *str)
+int     met_before(char *str, char c, int pos)
 {
-	int i;
+    int i;
 
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] >= 'A' && str[i] <= 'Z')
-			str[i] = str[i] + 32;
-		i++;
-	}
-	return (str);
+    i = 0;
+    while (i < pos)
+    {
+        if (str[i] == c)
+            return (1);
+        i++;
+    }
+    return (0);
 }
 
-int	not_before(char *str, char c, int pos)
+int    count_alpha(char *str, char c)
 {
-	int i;
+    int i;
+    int count;
 
-	i = 0;
-	while (i < pos)
-	{
-		if (str[i] == c)
-			return (0);
-		i++;
-	}
-	return (1);
+    i = 0;
+    count = 0;
+    while (str[i])
+    {
+        if (str[i] == c)
+            count++;
+        i++;
+    }
+    return (count);
 }
 
-void	ft_count(char *str)
+int main (int argv, char **argc)
 {
-	
-	int i;
-	int j;
-	int count;
-	int flag;
-	
-	i = 0;
-	flag = 0;
-	while (str[i] != '\0')
-	{
-		if (is_alpha(str[i]) && not_before(str, str[i], i))
-		{
-			j = i;
-			count = 0;
-			while (str[j] != '\0')
-			{	
-				if (str[j] == str[i])
-					count++;
-				j++;
-			}
-			if (flag != 0)
-				printf(", %d%c", count, str[i]);
-			else
-			{
-				printf("%d%c", count, str[i]);
-				flag++;
-			}
-		}
-		i++;
-	}
+    int i;
+    int f;
+    char *str;
+
+    i = 0;
+    f = 0;
+    if (argv == 2)
+    {
+        str = to_low(argc[1]);
+        while (str[i])
+        {
+            if (str[i] >= 'a' && str[i] <= 'z' && !met_before(str, str[i], i))
+            {
+                if (f != 0)
+                    printf(", %d%c", count_alpha(str, str[i]), str[i]);
+                else
+                {
+                    printf("%d%c", count_alpha(str, str[i]), str[i]);
+                    f = 1;
+                }
+            }
+            i++;
+        }
+    }
+    printf("\n");
+    return (0);
 }
 
-int	main(int argc, char **argv)
-{
-	if (argc == 2)
-	{
-		ft_count(ft_tolower(argv[1]));
-	}
-	printf("\n");
-	return (0);
-}
