@@ -27,6 +27,8 @@ int	gold_gain(int **mine, int n)
 	
 	max = 0;
 	j = 1;
+	if (!mine)
+        return (0);
 	while (j < n)
 	{
 		i = 0;
