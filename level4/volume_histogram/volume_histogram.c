@@ -14,37 +14,37 @@
 
 int    volume_histogram(int *histogram, int size)
 {
-	int i;
-	int h;
-	int w;
-	int left;
-	int right;
+    int i;
+    int h;
+    int w;
+    int left;
+    int right;
 
-	i = 0;
-	w = 0;
-	left = 0;
-	right = 0;
-	h = size - 1;
-	while (i <= h)
-	{
-		if (histogram[i] < histogram[h])
-		{
-			if (histogram[i] > left)
-				left = histogram[i];
-			else
-				w = w + (left - histogram[i]);
-			i++;
-		}
-		else
-		{
-			if (histogram[h] > right)
-				right = histogram[h];
-			else
-				w = w + (right - histogram[h]);
-			h--;
-		}
-	}
-	return (w);
+    i = 0;
+    h = size - 1;
+    w = 0;
+    left = 0;
+    right = 0;
+    while (i <= h)
+    {
+        if (histogram[i] < histogram[h])
+        {
+            if (left < histogram[i])
+                left = histogram[i];
+            else
+                w = w + (left - histogram[i]);
+            i++;
+        }
+        else
+        {
+            if (right < histogram[h])
+                right = histogram[h];
+            else
+                w = w + (right - histogram[h]);
+            h--;
+        }
+    }
+    return (w);
 }
 
 int main(void)
