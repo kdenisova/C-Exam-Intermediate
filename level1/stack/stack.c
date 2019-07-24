@@ -35,7 +35,7 @@ void *pop(struct s_stack *stack)
 	struct s_node *node;
 	void *content;
 
-	if (!stack->top)
+	if (!stack || !stack->top)
 		return (NULL);
 	content = stack->top->content;
 	node = stack->top;
@@ -48,6 +48,8 @@ void push(struct s_stack *stack, void *content)
 {
 	struct s_node *node;
 
+	if (!stack)
+		return ;
 	node = (struct s_node *)malloc(sizeof(struct s_node));
 	node->content = content;
 	node->next = stack->top;
@@ -56,14 +58,14 @@ void push(struct s_stack *stack, void *content)
 
 void *peek(struct s_stack *stack)
 {
-	if (!stack->top)
+	if (!stack || !stack->top)
 		return (NULL);
 	return (stack->top->content);
 }
 
 int isEmpty(struct s_stack *stack)
 {
-	if (!stack->top)
+	if (!stack || !stack->top)
 		return (1);
 	return (0);
 }
