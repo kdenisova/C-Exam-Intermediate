@@ -65,7 +65,11 @@ int	*permitation(int *num, int n)
 	while (i >= 0 && num[i] > num[i + 1])
 		i--;
 	if (i < 0)
+	{
+		printf("return 0\n");
 		return (0);
+	}
+		
 	j = n - 1;
 	while (num[i] > num[j])
 		j--;
@@ -131,7 +135,7 @@ int main(void)
 	int **arr;
 
 	i = 0;
-	n = 3;
+	n = 5;
 	arr = range_comb(n);
 	while (arr[i])
 	{
