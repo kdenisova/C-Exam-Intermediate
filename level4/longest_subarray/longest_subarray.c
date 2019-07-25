@@ -10,84 +10,63 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <stdlib.h>
 
-int find_len(char *arr, int i, int len)
+int find_len(char *str, int i)
 {
-    int od;
+    int len;
     int ev;
-    int total;
-
-    od = 0;
+    int od;
+    
     ev = 0;
-    total = 0;
-    while (i < len)
+    od = 0;
+    len = 0;
+    while (str[i])
     {
-        if ((arr[i] - '0') % 2 == 0)
-            od++;
-        else
+        if ((str[i] - '0') % 2 == 0)
             ev++;
-        if (od == ev)
-            total = od + ev;
+        else
+            od++;
+        if (ev == od)
+            len = ev + od;
         i++;
     }
-    return (total);
+    return (len);
 }
 
 char    *longest_subarray(char *arr)
 {
-	int i;
-    int j;
-	int max;
-	int len;
-	int *total;
-	char *new;
+    int i;
+    int max;
+    int pos;
+    int *total;
+    char *new;
 
     if (!arr)
-		return (NULL);
-	max = 0;
-	i = 0;
-	len = strlen(arr);
-    total = (int *)malloc(sizeof(int) * len);
-	while (i < len)
+        return (NULL);
+    total = (int *)malloc(sizeof(int) * strlen(arr));
+    i = 0;
+    max = 0;
+    while (arr[i])
     {
-        total[i] = 0;
+        total[i] = find_len(arr, i);
+        if (total[i] > max)
+        {
+            max = total[i];
+            pos = i;
+        } 
         i++;
     }
     i = 0;
-    while (i < len)
-	{
-        total[i] = find_len(arr, i, len);
-        if (total[i] > max)
-            max = total[i];
-        i++;
-    }
     new = (char *)malloc(sizeof(char) * max + 1);
-    new[max] = '\0';
-	if (max > 0)
+    while (i < max)
     {
-        i = 0;
-        while (i < len)
-        {
-            if (total[i] == max)
-                break ;
-            i++;
-        }
-        j = 0;
-	    while (j < max && arr[i])
-	    {
-		    new[j] = arr[i];
-		    i++;
-		    j++;
-	    }
+        new[i] = arr[pos];
+        i++;
+        pos++;
     }
-	return (new);
-}
-
-int main()
-{
-    printf("%s\n", longest_subarray("4"));
-    return 0;
+    new[max] = '\0';
+    free(total);
+    return (new);
 }
