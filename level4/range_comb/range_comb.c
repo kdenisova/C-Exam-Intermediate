@@ -10,22 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void put_arr(int *arr, int n)
-{
-	int i;
-
-	i = 0;
-	while (i < n)
-	{
-		printf("%d ", arr[i]);
-		i++;
-	}
-	printf("\n");
-}
 
 void	swap(int *arr, int i, int j)
 {
@@ -41,15 +27,10 @@ int		ft_fact(int nbr)
 	int f;
 
 	f = 1;
-	if (nbr > 12 || nbr < 0)
-		return (0);
-	else
+	while (nbr)
 	{
-		while (nbr)
-		{
-			f = f * nbr;
-			nbr--;
-		}
+		f = f * nbr;
+		nbr--;
 	}
 	return (f);
 }
@@ -67,7 +48,7 @@ int	*permitation(int *num, int n)
 	if (i < 0)
 		return (0);
 	j = n - 1;
-	while (num[i] > num[j])
+	while (num[i] >= num[j])
 		j--;
 	swap(num, i, j);
 	left = i + 1;
@@ -81,63 +62,31 @@ int	*permitation(int *num, int n)
 	return (num);
 }
 
-void copy_arr(int *dst, int *src, int n)
-{
-	int i;
-
-	i = 0;
-	while (i < n)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-}
-
 int    **range_comb(int n)
 {
 	int fact;
 	int **arr;
 	int i;
-	int *num;
 
+	if (n <= 0)
+		return (NULL);
 	fact = ft_fact(n);
-	arr = (int **)malloc(sizeof(int *) * fact);
-	num = (int *)malloc(sizeof(int) * n);
+	arr = (int **)malloc(sizeof(int *) * fact * n);
+	arr[0] = (int *)malloc(sizeof(int) * n);
 	i = 0;
 	while (i < n)
 	{
-		num[i] = i;
+		arr[0][i] = i;
 		i++;
 	}
-	arr[0] = (int *)malloc(sizeof(int) * n);
-	copy_arr(arr[0], num, n);
 	i = 1;
 	while (i < fact)
 	{
 		arr[i] = (int *)malloc(sizeof(int) * n);
-		copy_arr(arr[i], arr[i - 1], n);
+		memcpy(arr[i], arr[i - 1], sizeof(int) * n);
 		permitation(arr[i], n);
 		i++;
 	}
-	free(num);
 	arr[fact] = NULL;
 	return (arr);
 }
-
-int main(void)
-{
-	int n;
-	int i;
-	int **arr;
-
-	i = 0;
-	n = 3;
-	arr = range_comb(n);
-	while (arr[i])
-	{
-		put_arr(arr[i], n);
-		i++;
-	}
-	return 0;
-}
-
