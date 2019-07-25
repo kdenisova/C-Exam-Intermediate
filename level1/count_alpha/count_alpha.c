@@ -26,63 +26,42 @@ char *to_low(char *str)
     return (str);
 }
 
-int     met_before(char *str, char c, int pos)
-{
-    int i;
-
-    i = 0;
-    while (i < pos)
-    {
-        if (str[i] == c)
-            return (1);
-        i++;
-    }
-    return (0);
-}
-
-int    count_alpha(char *str, char c)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (str[i])
-    {
-        if (str[i] == c)
-            count++;
-        i++;
-    }
-    return (count);
-}
-
-int main (int argv, char **argc)
+void    count_alpha(char *str)
 {
     int i;
     int f;
-    char *str;
+    int al[127] = {0};
 
     i = 0;
     f = 0;
-    if (argv == 2)
+    while (str[i])
     {
-        str = to_low(argc[1]);
-        while (str[i])
-        {
-            if (str[i] >= 'a' && str[i] <= 'z' && !met_before(str, str[i], i))
-            {
-                if (f != 0)
-                    printf(", %d%c", count_alpha(str, str[i]), str[i]);
-                else
-                {
-                    printf("%d%c", count_alpha(str, str[i]), str[i]);
-                    f = 1;
-                }
-            }
-            i++;
-        }
+        if (str[i] >= 'a' && str[i] <= 'z')
+            al[(unsigned)str[i]]++;
+        i++;
     }
-    printf("\n");
-    return (0);
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] >= 'a' && str[i] <= 'z' && al[(unsigned)str[i]] != 0)
+        {
+            if (f == 1)
+                printf(", %d%c", al[(unsigned)str[i]], str[i]);
+            else
+            {
+                printf("%d%c", al[(unsigned)str[i]], str[i]);
+                f = 1;
+            }
+            al[(unsigned)str[i]] = 0;
+        }
+        i++;
+    }
 }
 
+int main(int argc, char *argv[])
+{
+    if (argc == 2)
+       count_alpha(to_low(argv[1]));
+    printf("\n");
+    return 0;
+}
