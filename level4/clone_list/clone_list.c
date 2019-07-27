@@ -35,6 +35,14 @@ struct s_node *clone_list(struct s_node *node)
 		head->next->next = current;
 		head->next->other = NULL;
 		head = current;
+
+		//check this
+		// current = (struct s_node *)malloc(sizeof(struct s_node));
+		// current->data = head->data;
+		// current->next = head->next;
+		// current->other = NULL;
+		// head->next = current;
+		// head = head->next->next;
 	}
 	head = node;
 	while (head)
