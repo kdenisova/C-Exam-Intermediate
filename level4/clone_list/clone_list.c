@@ -20,8 +20,8 @@ struct s_node {
 
 struct s_node *clone_list(struct s_node *node)
 {
-	struct s_node *head;
 	struct s_node *current;
+	struct s_node *head;
 	struct s_node *clone;
 
 	if (!node)
@@ -29,20 +29,12 @@ struct s_node *clone_list(struct s_node *node)
 	head = node;
 	while (head)
 	{
-		current = head->next;
-		head->next = malloc(sizeof(struct s_node));
-		head->next->data = head->data;
-		head->next->next = current;
-		head->next->other = NULL;
-		head = current;
-
-		//check this
-		// current = (struct s_node *)malloc(sizeof(struct s_node));
-		// current->data = head->data;
-		// current->next = head->next;
-		// current->other = NULL;
-		// head->next = current;
-		// head = head->next->next;
+		current = (struct s_node *)malloc(sizeof(struct s_node));
+		current->data = head->data;
+		current->next = head->next;
+		current->other = NULL;
+		head->next = current;
+		head = head->next->next;
 	}
 	head = node;
 	while (head)
@@ -58,7 +50,7 @@ struct s_node *clone_list(struct s_node *node)
 		if (clone)
 		{
 			current->next = head->next;
-			current = current->next; 
+			current = current->next;
 		}
 		else
 		{

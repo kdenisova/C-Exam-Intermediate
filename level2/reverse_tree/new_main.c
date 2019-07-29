@@ -48,3 +48,40 @@ int main(void)
 	print(&a);
 	return 0;
 }
+
+// struct s_node *create_node(int value)
+// {
+// 	struct s_node *node;
+
+// 	node = (struct s_node *)malloc(sizeof(struct s_node));
+// 	node->value = value;
+// 	node->left = NULL;
+// 	node->right = NULL;
+// 	return (node);
+// }
+
+// int main()
+// {
+// 	struct s_node *root;
+
+// 	root = create_node(94);
+// 	root->right = create_node(52);
+// 	root->left = create_node(34);
+// 	root->left->left = create_node(1);
+// 	root->left->left->left = create_node(20);
+// 	root->left->right = create_node(99);
+// 	root->left->right->left = create_node(83);
+// 	root->left->right->left->right = create_node(31);
+// 	root->left->right->right = create_node(39);
+// 	root->left->right->right->left = create_node(37);
+// 	root->left->right->right->right = create_node(67);
+// 	printf("%d\n", root->left->right->right->right->value);
+// 	printf("%d\n", root->left->value);
+// 	printf("%d\n", root->right->value);
+// 	reverse_tree(root);
+// 	printf("\n%d\n", root->right->left->left->left->value);
+// 	printf("%d\n", root->left->value);
+// 	printf("%d\n", root->right->value);
+// 	printf("%d\n",root->right->right->right->value);
+// 	return 0;
+// }
