@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdenisov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/24 11:07:51 by kdenisov          #+#    #+#             */
-/*   Updated: 2019/07/24 11:07:53 by kdenisov         ###   ########.fr       */
+/*   Created: 2019/07/30 09:14:57 by exam              #+#    #+#             */
+/*   Updated: 2019/07/30 09:14:59 by exam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void *dequeue(struct s_queue *queue)
 
 	if (!queue || !queue->first)
 		return (NULL);
-	if (queue->first == queue->last)
-		queue->last = NULL;
 	content = queue->first->content;
 	temp = queue->first;
 	queue->first = temp->next;
