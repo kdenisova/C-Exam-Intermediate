@@ -12,14 +12,16 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-struct s_inf
+int	ft_strlen(char *str)
 {
 	int len;
-	int sign;
-	char *val;
-};
+
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
 
 void	put_str(char *str)
 {
@@ -33,108 +35,98 @@ void	put_str(char *str)
 	}
 }
 
-int		ft_strlen(char *str)
+char *inf_mult(char *a, char *b, int len1, int len2)
 {
-	int len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-
-struct s_inf *init(char *str)
-{
-	struct s_inf *a;
-
-	a = (struct s_inf *)malloc(sizeof(struct s_inf));
-	a->len = ft_strlen(str);
-	if (str[0] == '-')
-	{
-		a->val = (char *)malloc(sizeof(char) * a->len);
-		a->val = &str[1];
-		a->len--;
-		a->sign = 1;
-	}
-	else
-	{
-		a->val = (char *)malloc(sizeof(char) * a->len + 1);
-		a->val = str;
-		a->sign = 0;
-	}
-	return (a);
-}
-
-char *inf_mult(struct s_inf *a, struct s_inf *b)
-{
+	int ia;
+	int ib;
 	int i;
-	int j;
 	int pos;
-	int left;
-	int *temp;
 	int total;
+	int *left;
 	char *res;
 	
-	total = a->len + b->len;
-	temp = (int *)malloc(sizeof(int) * total);
+	total = len1 + len2;
+	left = (int *)malloc(sizeof(int) * total);
 	res = (char *)malloc(sizeof(char) * total + 1);
 	res[total] = '\0';
 	i = 0;
 	while (i < total)
 	{
+		left[i] = 0;
 		res[i] = 0;
-		temp[i] = 0;
 		i++;
 	}
-	pos = 0;
-	a->len--;
-	b->len--;
+	len1--;
+	len2--;
 	total--;
-	while (a->len >= 0)
+	ia = len1;
+	pos = 0;
+	while (ia >= 0)
 	{
 		i = total;
-		j = b->len;
-		while (j >= 0)
+		ib = len2;
+		while (ib >= 0)
 		{
-			temp[i - pos] = temp[i - pos] + (a->val[a->len] - '0') * (b->val[j] - '0');
+			left[i - pos] = left[i - pos] + (a[ia] - '0') * (b[ib] - '0');
+			ib--;
 			i--;
-			j--;
 		}
 		pos++;
-		a->len--;
+		ia--;
 	}
-	i = total;
-	left = 0;
-	while (i >= 0)
+	pos = 0;
+	while (total >= 0)
 	{
-		j = temp[i] + left;
-		res[i] = j % 10 + '0';
-		left = j / 10;
-		i--;
+		pos = pos + left[total];
+		res[total] = '0' + (pos % 10);
+		pos = pos / 10;
+		total--;
 	}
 	while (*res == '0')
 		res++;
 	return (res);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-	struct s_inf *a;
-	struct s_inf *b;
+	int s1;
+	int s2;
+	int len1;
+	int len2;
 	char *res;
 
 	if (argc == 3)
 	{
-		a = init(argv[1]);
-		b = init(argv[2]);
-		res = inf_mult(a, b);
-		if (*res && ((!a->sign && b->sign) || (a->sign && !b->sign)))
-			write(1, "-", 1);
+		len1 = ft_strlen(argv[1]);
+		len2 = ft_strlen(argv[2]);
+		if (argv[1][0] == '-')
+		{
+			s1 = -1;
+			len1--;
+			argv[1]++;
+		}
+		else
+			s1 = 1;
+		if (argv[2][0] == '-')
+		{
+			s2 = -1;
+			len2--;
+			argv[2]++;
+		}
+		else
+			s2 = 1;
+		res = inf_mult(argv[1], argv[2], len1, len2);
 		if (*res)
+		{
+			if ((s1 * s2) < 0)
+				write(1, "-", 1);
 			put_str(res);
+		}
 		else
 			write(1, "0", 1);
+		
 		write(1, "\n", 1);
 	}
-	return (0);
+	return 0;
 }
+

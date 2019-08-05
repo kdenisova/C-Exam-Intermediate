@@ -49,3 +49,23 @@ int main(void)
 	printf("is looping = %d\n", is_looping(n1));
 	return (0);
 }
+
+
+// int main(void)
+// {
+// 	struct s_node n1 = {1, NULL},
+// 				n2 = {2, NULL},
+// 				n3 = {3, NULL},
+// 				n4 = {4, NULL},
+// 				n5 = {5, NULL},
+// 				n6 = {6, NULL};
+// 	n1.next = &n2;
+// 	n2.next = &n3;
+// 	n3.next = &n4;
+// 	n4.next = &n5;
+// 	n5.next = &n6;
+	
+// 	printf("%d\n", is_looping(&n1));
+// 	return 0;
+// }
+

@@ -38,7 +38,7 @@ int main()
 	root->left->left = create_node(3);
 	root->left->right = create_node(4);
 	root->left->right->left = create_node(6);
-	printf("%d\n", width_tree(root));
+	printf("6 %d\n", width_tree(root));
 
 	root2 = create_node(1);
 	root2->right = create_node(3);
@@ -53,22 +53,22 @@ int main()
 	root2->left->right->left->right = create_node(12);
 	root2->left->right->right = create_node(10);
 	root2->left->right->right->right = create_node(13);
-	printf("%d\n", width_tree(root2));
+	printf("7 %d\n", width_tree(root2));
 
 	root3 = create_node(10);
 	root3->right = create_node(12);
-	printf("%d\n", width_tree(root3));
+	printf("2 %d\n", width_tree(root3));
 
 	root4 = create_node(25);
 	root4->left = create_node(33);
 	root4->left->left = create_node(12);
 	root4->left->right = create_node(9);
 	root4->left->right->left = create_node(3);
-	printf("%d\n", width_tree(root4));
+	printf("4 %d\n", width_tree(root4));
 
 	root5 = create_node(10);
-	printf("%d\n", width_tree(root5));
+	printf("1 %d\n", width_tree(root5));
 
-	printf("%d\n", width_tree(NULL));
+	printf("0 %d\n", width_tree(NULL));
 	return 0;
 }
