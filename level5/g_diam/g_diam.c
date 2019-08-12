@@ -5,63 +5,56 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdenisov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/09 11:46:34 by kdenisov          #+#    #+#             */
-/*   Updated: 2019/08/09 11:46:49 by kdenisov         ###   ########.fr       */
+/*   Created: 2019/08/12 16:21:46 by kdenisov          #+#    #+#             */
+/*   Updated: 2019/08/12 16:21:48 by kdenisov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
 
-static int res;
-
-int ft_nbr(char c)
+void 	ft_putchar(char c)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
+	write(1, &c, 1);
 }
 
 void	ft_putnbr(int n)
 {
-	int				i;
-	char c;
-	int				buffer[10];
-	unsigned int	unb;
+	int i;
+	int buf[10];
 
 	i = 0;
-	unb = n;
-	while (unb)
+	while (n)
 	{
-		buffer[i] = unb % 10;
-		unb = unb / 10;
+		buf[i] = n % 10;
+		n = n / 10;
 		i++;
 	}
 	i--;
 	while (i >= 0)
 	{
-		c = '0' + buffer[i];
-		write(1, &c, 1);
+		ft_putchar(buf[i] + '0');
 		i--;
 	}
 }
 
 int ft_atoi(char **str)
 {
-	int atoi;
+	int at;
 
-	atoi = 0;
-	while (ft_nbr(**str))
+	at = 0;
+	while ((**str) >= '0' && (**str) <= '9')
 	{
-		atoi = atoi * 10 + **str - '0';
+		at = at * 10 + (**str) - '0';
 		(*str)++;
 	}
 	if (**str)
 		(*str)++;
-	return (atoi);
+	return (at);
 }
 
-void	find_path(int max, unsigned graph[max][max], unsigned path[max], int y, int len)
+static int ret;
+
+void find_path(int max, int y, int len, unsigned char grid[max][max], unsigned char path[max])
 {
 	int x;
 
@@ -69,21 +62,21 @@ void	find_path(int max, unsigned graph[max][max], unsigned path[max], int y, int
 	x = 0;
 	while (x < max)
 	{
-		if (graph[y][x] && !path[x])
+		if (grid[y][x] && !path[x])
 		{
-			if (res < len + 1)
-				res = len + 1;
-			find_path(max, graph, path, x, len + 1);
+			if (ret < len + 1)
+				ret = len + 1;
+			find_path(max, x, len + 1, grid, path);
 		}
 		x++;
 	}
 	path[y] = 0;
 }
 
-void	create_graph(int max, char *str)
+void	create_graph(char *str, int max)
 {
-	unsigned graph[max][max];
-	unsigned path[max];
+	unsigned char grid[max][max];
+	unsigned char path[max];
 	int x;
 	int y;
 
@@ -93,42 +86,42 @@ void	create_graph(int max, char *str)
 		x = 0;
 		while (x < max)
 		{
-			graph[y][x] = 0;
+			grid[y][x] = 0;
 			x++;
 		}
 		y++;
 	}
-	x = 0;
-	while (x < max)
+	y = 0;
+	while (y < max)
 	{
-		path[x] = 0;
-		x++;
+		path[y] = 0;
+		y++;
 	}
 	while (*str)
 	{
 		y = ft_atoi(&str);
 		x = ft_atoi(&str);
-		graph[y][x] = 1;
-		graph[x][y] = 1;
+		grid[y][x] = 1;
+		grid[x][y] = 1;
 	}
-	res = 2;
+	ret = 2;
 	y = 0;
 	while (y < max)
 	{
-		find_path(max, graph, path, y, 1);
+		find_path(max, y, 1, grid, path);
 		y++;
 	}
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	int temp;
 	int max;
+	int temp;
 	char *str;
 
+	max = 0;
 	if (argc == 2)
 	{
-		max = 0;
 		str = &argv[1][0];
 		while (*str)
 		{
@@ -137,27 +130,10 @@ int main(int argc, char *argv[])
 				max = temp;
 		}
 		max++;
-		create_graph(max, &argv[1][0]);
-		ft_putnbr(res);
+		create_graph(&argv[1][0], max);
+		ft_putnbr(ret);
 	}
-	write(1, "\n", 1);
+	ft_putchar('\n');
 	return 0;
 }
 
-/* Write a programe that takes a string. This string represents a graph and is
-composed of series of links between this graph's nodes. Links are separated by
-a single space. Nodes are represented by numbers, and links by two nodes
-separated by a '-'. For exemple, if there is a link between nodes 2
-and 3, it could be written as "2-3" or "3-2".
-
-The program will display the number of nodes comprised in the longest chain,
-followed by a '\n', given it's impossible to pass through a node more than once.
-
-If the number of parameters is different from 1, the program displays a '\n'.
-
-Examples:
-
-$>./g_diam "17-5 5-8 8-2 2-8 2-8 17-21 21-2 5-2 2-6 6-14 6-12 12-19 19-14 14-42" | cat -e
-10$
-$>./g_diam "1-2 2-3 4-5 5-6 6-7 7-8 9-13 13-10 10-2 10-11 11-12 12-8 16-4 16-11 21-8 21-12 18-10 18-13 21-18" | cat -e
-15$ */
