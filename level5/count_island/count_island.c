@@ -13,7 +13,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
+
+static char c;
 
 void	ft_putstr(char *str)
 {
@@ -46,6 +47,53 @@ char *ft_strjoin(char *s1, char *s2)
 	return (s1);
 }
 
+void	flood_fill(char **arr, int size, int len, int x, int y)
+{
+	arr[y][x] = c;
+	if (y + 1 < size && arr[y + 1][x] == 'X')
+		flood_fill(arr, size, len, x, y + 1);
+	if (y - 1 >= 0 && arr[y - 1][x] == 'X')
+		flood_fill(arr, size, len, x, y - 1);
+	if (x + 1 < len && arr[y][x + 1] == 'X')
+		flood_fill(arr, size, len, x + 1, y);
+	if (x - 1 >= 0 && arr[y][x - 1] == 'X')
+		flood_fill(arr, size, len, x - 1, y);
+}
+
+void	count_island(char **arr, int size)
+{
+	int x;
+	int y;
+	int len;
+
+	c = '0';
+	len = 0;
+	while (arr[0][len])
+		len++;
+	y = 0;
+	while (y < size)
+	{
+		x = 0;
+		while (x < len)
+		{
+			if (arr[y][x] == 'X')
+			{
+				flood_fill(arr, size, len, x, y);
+				c++;
+			}
+			x++;
+		}
+		y++;
+	}
+	y = 0;
+	while (arr[y])
+	{
+		ft_putstr(arr[y]);
+		y++;
+	}
+	free(arr);
+}
+
 int	create_island(char *name)
 {
 	int i;
@@ -58,7 +106,10 @@ int	create_island(char *name)
 	arr = (char **)malloc(sizeof(char *) * 1024 * 1024);
 	fd = open(name, O_RDONLY);
 	if (fd < 0)
+	{
+		write(1, "\n", 1);
 		return (-1);
+	}
 	i = 0;
 	arr[i] = (char *)malloc(sizeof(char) * 1024);
 	while ((ret = read(fd, buf, 2)) > 0)
@@ -73,13 +124,15 @@ int	create_island(char *name)
 		else
 			arr[i] = ft_strjoin(arr[i], buf);
 	}
-	arr[i + 1] = NULL;
-	i = 0;
-	while (arr[i])
+	close(fd);
+	if (ret < 0)
 	{
-		ft_putstr(arr[i]);
-		i++;
+		write(1, "\n", 1);
+		return (-1);
 	}
+	i++;
+	arr[i] = NULL;
+	count_island(arr, i);
 	return (0);
 }
 
@@ -87,7 +140,8 @@ int main(int argc, char *argv[])
 {
 	if (argc == 2)
 		create_island(argv[1]);
-	write(1, "\n", 1);
+	else
+		write(1, "\n", 1);
 	return 0;
 }
 
