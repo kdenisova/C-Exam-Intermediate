@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static char c;
 
@@ -58,6 +59,33 @@ void	flood_fill(char **arr, int size, int len, int x, int y)
 		flood_fill(arr, size, len, x + 1, y);
 	if (x - 1 >= 0 && arr[y][x - 1] == 'X')
 		flood_fill(arr, size, len, x - 1, y);
+}
+
+int check_island(char **arr, int size)// Doesn't work right
+{
+	int x;
+	int y;
+	int len;
+
+	len = 0;
+	while (arr[0][len] && arr[0][len] != '\n')
+		len++;
+	y = 0;
+	while (y < size - 1)
+	{
+		x = 0;
+		while (x < len - 1)
+		{
+			if (arr[y][x] == 'X' || arr[y][x] == '.')
+				x++;
+			else
+				break ;
+		}
+		if (x != len - 1 || arr[y][x + 1] != '\n')
+			return (0);
+		y++;
+	}
+	return (1);
 }
 
 void	count_island(char **arr, int size)
@@ -125,13 +153,13 @@ int	create_island(char *name)
 			arr[i] = ft_strjoin(arr[i], buf);
 	}
 	close(fd);
-	if (ret < 0)
+	i++;
+	arr[i] = NULL;
+	if (ret < 0 || !check_island(arr, i))
 	{
 		write(1, "\n", 1);
 		return (-1);
 	}
-	i++;
-	arr[i] = NULL;
 	count_island(arr, i);
 	return (0);
 }
