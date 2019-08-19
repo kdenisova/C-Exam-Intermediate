@@ -61,28 +61,38 @@ void	flood_fill(char **arr, int size, int len, int x, int y)
 		flood_fill(arr, size, len, x - 1, y);
 }
 
-int check_island(char **arr, int size)// Doesn't work right
+int		ft_strlen(char *str)
+{
+	int len;
+
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
+
+int check_island(char **arr, int size)
 {
 	int x;
 	int y;
 	int len;
 
-	len = 0;
-	while (arr[0][len] && arr[0][len] != '\n')
-		len++;
+	len = ft_strlen(arr[0]);
 	y = 0;
-	while (y < size - 1)
+	while (y < size)
 	{
 		x = 0;
-		while (x < len - 1)
+		if (len != ft_strlen(arr[y]))
+			return (0);
+		while (x < len)
 		{
 			if (arr[y][x] == 'X' || arr[y][x] == '.')
 				x++;
 			else
 				break ;
 		}
-		if (x != len - 1 || arr[y][x + 1] != '\n')
-			return (0);
+		if (x != len - 1 || arr[y][len - 1] != '\n')
+		 	return (0);
 		y++;
 	}
 	return (1);
@@ -143,7 +153,7 @@ int	create_island(char *name)
 	while ((ret = read(fd, buf, 2)) > 0)
 	{
 		buf[ret] = '\0';
-		if (buf[1] == '\n')
+		if (buf[0] == '\n' || buf[1] == '\n')
 		{
 			arr[i] = ft_strjoin(arr[i], buf);
 			i++;
@@ -155,7 +165,7 @@ int	create_island(char *name)
 	close(fd);
 	i++;
 	arr[i] = NULL;
-	if (ret < 0 || !check_island(arr, i))
+	if (ret < 0 || !check_island(arr, i - 1))
 	{
 		write(1, "\n", 1);
 		return (-1);
