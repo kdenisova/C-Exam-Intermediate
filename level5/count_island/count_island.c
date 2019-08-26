@@ -77,11 +77,13 @@ int check_island(char **arr, int size)
 	int len;
 
 	len = ft_strlen(arr[0]);
+	if (len == 0)
+		return (0);
 	y = 0;
 	while (y < size)
 	{
 		x = 0;
-		if (len != ft_strlen(arr[y]))
+		if (len != ft_strlen(arr[y]) || arr[y][0] == '\n')
 			return (0);
 		while (x < len)
 		{
